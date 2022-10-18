@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver,
+  ViewChild, ViewContainerRef, SimpleChanges} from '@angular/core';
+//import { ConsoleReporter } from 'jasmine';
 import { SocialCardType } from 'src/app/constants/social-card-type';
+import { FbCardComponent } from '../fb-card/fb-card.component';
+import { TwitterCardComponent } from '../twitter-card/twitter-card.component';
 
 @Component({
   selector: 'app-social-card',
@@ -8,10 +12,32 @@ import { SocialCardType } from 'src/app/constants/social-card-type';
 })
 export class SocialCardComponent implements OnInit {
   @Input() type: SocialCardType;
+  @ViewChild("vrf", {read: ViewContainerRef})vrf: ViewContainerRef
   cardTypes = SocialCardType;
-  constructor() { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
   }
-
+  ngOnchanges(changes: SimpleChanges){
+    if (changes.type.currentValue !== undefined){
+      this.loadDynamicComponent (changes.type.currentValue)
+    }
+  }
+  loadDynamicComponent(type:SocialCardType){
+    console.log(`card type changed to:
+                ${type}`)
+    let component
+    switch (type){
+      case SocialCardType.Facebook:
+        component=FbCardComponent
+        break
+      case SocialCardType.Twitter:
+        component=TwitterCardComponent
+        break
+    }
+    const componentFactory = this.
+      componentFactoryResolver.resolveComponentFactory(component);
+    this.vrf.clear();
+    this.vrf.createComponent(componentFactory)
+  }
 }
