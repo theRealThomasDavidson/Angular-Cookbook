@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-vc-logs',
@@ -7,9 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class VcLogsComponent implements OnInit {
   @Input() vName;
+  logs: string[] = [];
   constructor() { }
 
   ngOnInit(): void {
+
+  }
+  ngOnChanges(changes: SimpleChanges){
+    const currValue = changes.vName.currentValue;
+    if (changes.vName.isFirstChange()){
+      this.logs.push(`initial version is ${currValue.trim()}`)
+    }else{
+      this.logs.push(`version changed from ${changes.vName.previousValue.trim()} to ${currValue.trim()}`)
+    }
   }
 
 }
