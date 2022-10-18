@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { GalleryComponent } from './components/gallery/gallery.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,11 +8,13 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'cc-template-vars';
 
-  addNewPicture() {
+  addNewPicture(gallery: GalleryComponent) {
+    gallery.pictures.unshift(gallery.generateImage())
     console.log('added new picture');
   }
 
-  removeFirstPicture() {
+  removeFirstPicture(gallery: GalleryComponent) {
+    gallery.pictures.shift()
     console.log('removed first picture');
   }
 }
