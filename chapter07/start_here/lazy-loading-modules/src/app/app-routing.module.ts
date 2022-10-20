@@ -13,10 +13,11 @@ const routes: Routes = [{
   component: LandingComponent
 }, {
   path: 'home',
-  component: HomeComponent
+  loadChildren: () => import('./home/home.module').then
+  (m => m.HomeModule)
 }, {
-  path: 'about',
-  component: AboutComponent
+  path: "about",
+  loadChildren: () => import("./about/about.module").then(m => m.AboutModule)
 }];
 
 @NgModule({
