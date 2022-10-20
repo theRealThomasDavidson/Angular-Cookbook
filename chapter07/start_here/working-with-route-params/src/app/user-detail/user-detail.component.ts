@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../core/services/user.service';
 import { IUser } from '../core/interfaces/user.interface';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, takeWhile } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-detail',
@@ -11,12 +12,25 @@ import { mergeMap } from 'rxjs/operators';
 export class UserDetailComponent implements OnInit, OnDestroy {
   user: IUser;
   similarUsers: IUser[];
+  componentIsAlive = false;
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    const userId = null;
+    this.componentIsAlive = true;
+    this.route.paramMap
+    .pipe(
+    takeWhile (() => this.componentIsAlive)
+    )
+    .subscribe((params) => {
+    const userId = params.get('uuid');
+    this.getUserAndSimilarUsers(userId);
+    })
+    }
+
+  getUserAndSimilarUsers(userId){
     this.userService.getUser(userId)
       .pipe(
         mergeMap((user: IUser) => {
@@ -29,6 +43,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.componentIsAlive=false
   }
 
 }
