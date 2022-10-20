@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../interfaces/logger';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable(//{
+//  providedIn: 'root'
+//}
+)
 export class LoggerService implements Logger {
   constructor() { }
   info(val) {
