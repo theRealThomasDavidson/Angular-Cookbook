@@ -4,7 +4,7 @@ import { BucketService } from 'src/app/services/bucket.service';
 import { Fruit } from '../../../constants/fruit';
 import { IFruit } from '../../../interfaces/fruit.interface';
 import { ANIMATIONS } from '../../../constants/animations';
-
+import { AnimationEvent } from '@angular/animations';
 @Component({
   selector: 'app-bucket',
   templateUrl: './bucket.component.html',
@@ -15,6 +15,7 @@ export class BucketComponent implements OnInit {
   $bucket: Observable<IFruit[]>;
   selectedFruit: Fruit | null = null;
   fruits: string[] = Object.values(Fruit);
+  isSaving: boolean;
   constructor(private bucketService: BucketService) {}
 
   ngOnInit(): void {
@@ -30,5 +31,12 @@ export class BucketComponent implements OnInit {
   }
   deleteFromBucket(fruit: IFruit) {
     this.bucketService.removeItem(fruit);
+  }
+  onAnimationStarted( event: AnimationEvent ) {
+    this.isSaving= true
+  }
+  onAnimationDone( event: AnimationEvent ) {
+    this.isSaving= false
+    this.selectedFruit = null;
   }
 }
