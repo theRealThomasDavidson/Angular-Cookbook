@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { ANIMATIONS } from 'src/app/constants/animations';
 import { BucketService } from 'src/app/services/bucket.service';
 import { Fruit } from '../../../constants/fruit';
 import { IFruit } from '../../../interfaces/fruit.interface';
@@ -7,7 +8,8 @@ import { IFruit } from '../../../interfaces/fruit.interface';
 @Component({
   selector: 'app-bucket',
   templateUrl: './bucket.component.html',
-  styleUrls: ['./bucket.component.scss']
+  styleUrls: ['./bucket.component.scss'],
+  animations:[ANIMATIONS.LIST_ANIMATION],
 })
 export class BucketComponent implements OnInit {
   $bucket: Observable<IFruit[]>;
