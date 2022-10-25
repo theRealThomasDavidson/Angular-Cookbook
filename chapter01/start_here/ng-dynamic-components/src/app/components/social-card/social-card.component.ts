@@ -12,7 +12,7 @@ import { TwitterCardComponent } from '../twitter-card/twitter-card.component';
 })
 export class SocialCardComponent implements OnInit {
   @Input() type: SocialCardType;
-  @ViewChild("vrf", {read: ViewContainerRef})vrf: ViewContainerRef
+  @ViewChild('vrf', {read: ViewContainerRef})vrf: ViewContainerRef;
   cardTypes = SocialCardType;
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -20,8 +20,10 @@ export class SocialCardComponent implements OnInit {
   }
   ngOnchanges(changes: SimpleChanges){
     if (changes.type.currentValue !== undefined){
+      console.log("ngOnchanges success")
       this.loadDynamicComponent (changes.type.currentValue)
     }
+    console.log("ngOnchanges failed")
   }
   loadDynamicComponent(type:SocialCardType){
     console.log(`card type changed to:
@@ -35,8 +37,7 @@ export class SocialCardComponent implements OnInit {
         component=TwitterCardComponent
         break
     }
-    const componentFactory = this.
-      componentFactoryResolver.resolveComponentFactory(component);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     this.vrf.clear();
     this.vrf.createComponent(componentFactory)
   }
