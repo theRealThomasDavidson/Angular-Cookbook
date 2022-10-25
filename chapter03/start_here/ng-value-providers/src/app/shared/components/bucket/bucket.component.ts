@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { APP_CONFIG, IAppConfig } from 'src/app/constants/app-config';
 import { BucketService } from 'src/app/services/bucket.service';
 import { Fruit } from '../../../constants/fruit';
 import { IFruit } from '../../../interfaces/fruit.interface';
@@ -13,11 +14,14 @@ export class BucketComponent implements OnInit {
   $bucket: Observable<IFruit[]>;
   selectedFruit: Fruit = '' as null;
   fruits: string[] = Object.values(Fruit);
-  constructor(private bucketService: BucketService) { }
+  canDeleteItems:boolean;
+  constructor(private bucketService: BucketService,
+    @Inject(APP_CONFIG) private config: IAppConfig) { }
 
   ngOnInit(): void {
     this.$bucket = this.bucketService.$bucket;
     this.bucketService.loadItems();
+    this.canDeleteItems = this.config.canDeleteItems;
   }
 
   addSelectedFruitToBucket() {
